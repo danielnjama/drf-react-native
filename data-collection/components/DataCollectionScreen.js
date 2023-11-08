@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Image
 } from "react-native";
 // import DatePicker from 'react-native-datepicker';
 import { Picker } from "@react-native-picker/picker";
@@ -16,6 +17,7 @@ export default function DataCollectionScreen() {
   const [income,setIncome]=useState();
   const [rent,setRent]=useState();
   const [first_name,setfirst_name]=useState();
+  const [selectedcarstatus,setSelectedcarstatus]=useState()
 
 
   const handleSubmit = () => {
@@ -26,7 +28,7 @@ export default function DataCollectionScreen() {
       age: age,
       monthly_income: income,
       house_rent: rent,
-      own_a_car: 1
+      own_a_car: selectedcarstatus
     };
 
     //check if the object userData has complete data:
@@ -59,6 +61,7 @@ if (checkAllEntriesHaveData(userData)) {
       setIncome();
       setRent();
       setfirst_name();
+      setSelectedcarstatus();
 
     })
     .catch((error) => {
@@ -73,8 +76,14 @@ if (checkAllEntriesHaveData(userData)) {
   };
 
   return (
-    <KeyboardAvoidingView behavior="position">
+    <KeyboardAvoidingView behavior="height">
       <View style={styles.container}>
+        <View style={styles.imageView}>
+        <Image
+        source={require('../assets/info.png')}
+        style={styles.image}
+      />
+        </View>
         <View style={styles.HeaderView}>
           <Text style={styles.HeaderText}> Enter your Information </Text>
         </View>
@@ -101,6 +110,18 @@ if (checkAllEntriesHaveData(userData)) {
         </View>
         <View style={[styles.InputView, styles.MoreinputStyle]}>
           <TextInput placeholder="House Rent" keyboardType="numeric" value={rent} onChangeText={(text) => setRent(text)}/>
+        </View>
+        <View style={styles.InputView}>
+          <Text>Do you own a car?</Text>
+          <Picker
+            selectedValue={selectedcarstatus}
+            onValueChange={(itemValue) => setSelectedcarstatus(itemValue)}
+          >
+            <Picker.Item label="Select option" value="" />
+            <Picker.Item label="YES" value="1" />
+            <Picker.Item label="NO" value="0" />
+            
+          </Picker>
         </View>
         <TouchableOpacity style={styles.submitInfo} onPress={handleSubmit}>
           <Text> SUBMIT INFO </Text>
@@ -141,4 +162,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingLeft: 15,
   },
+  image:{
+    height: 60,
+    width: 60,
+  },
+  imageView:{
+    alignContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
+  }
 });
